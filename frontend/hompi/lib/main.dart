@@ -61,6 +61,9 @@ class RandomWords extends StatefulWidget {
 class _RandomWordsState extends State<RandomWords> {
   final _tasks = <Task>[];
   final _biggerFont = TextStyle(fontSize: 18.0);
+  TextEditingController _textFieldController = TextEditingController();
+  String valueText;
+  String codeDialog;
 
   @override
   initState() {
@@ -78,6 +81,49 @@ class _RandomWordsState extends State<RandomWords> {
         _tasks.addAll(albums);
       });
     });
+  }
+
+  Future<void> _displayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('TextField in Dialog'),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                });
+              },
+              controller: _textFieldController,
+              decoration: InputDecoration(hintText: "Text Field in Dialog"),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.red,
+                textColor: Colors.white,
+                child: Text('CANCEL'),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              FlatButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('OK'),
+                onPressed: () {
+                  setState(() {
+                    codeDialog = valueText;
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+
+            ],
+          );
+        });
   }
 
   Widget _buildSuggestions() {
@@ -110,7 +156,9 @@ class _RandomWordsState extends State<RandomWords> {
         ),
         body: _buildSuggestions(),
         floatingActionButton: FloatingActionButton(
-          onPressed: _addTask,
+          onPressed: () {
+            _displayTextInputDialog(context);
+          },
           tooltip: 'Increment',
           child: Icon(Icons.add),
         ));
