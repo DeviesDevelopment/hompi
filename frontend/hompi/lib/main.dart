@@ -31,7 +31,7 @@ void addTask(Task task) async {
       },
     body: jsonEncode(<String, String>{
       'title': task.title,
-      'due_date': DateTime.now().toIso8601String(),
+      'due_date': task.dueDate.toIso8601String(),
       'interval': task.interval + ' 00:00:00',
     }),
   );
@@ -133,7 +133,7 @@ class _RandomWordsState extends State<RandomWords> {
                   setState(() {
                     Task newTask = Task.dummy(
                         title: titleInputText,
-                        dueDate: DateTime.now(),
+                        dueDate: DateTime.now().add(new Duration(days: int.parse(intervalInputText))),
                         interval: intervalInputText
                     );
                     _addTask(newTask);
