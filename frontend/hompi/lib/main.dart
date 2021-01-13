@@ -5,11 +5,11 @@ import 'dart:convert';
 
 void main() => runApp(MyApp());
 
-Future<List<Album>> fetchAlbum() async {
-  final response = await http.get('https://jsonplaceholder.typicode.com/albums');
+Future<List<Task>> fetchTasks() async {
+  final response = await http.get('http://10.0.2.2:8000/api/');
   if (response.statusCode == 200) {
     Iterable list = json.decode(response.body);
-    return list.map((model) => Album.fromJson(model)).toList();
+    return list.map((model) => Task.fromJson(model)).toList();
     // If the server did return a 200 OK response,
     // then parse the JSON.
   } else {
@@ -23,8 +23,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Startup Name Generator',
-        home: RandomWords(),
+      title: 'Homepi',
+      home: RandomWords(),
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
     );
   }
 }
@@ -35,33 +39,34 @@ class RandomWords extends StatefulWidget {
 }
 
 class _RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
+  final _tasks = <Task>[];
   final _biggerFont = TextStyle(fontSize: 18.0);
 
   @override
   initState() {
     super.initState();
-    fetchAlbum().then((albums) {
-      print(albums[0].title);
+    fetchTasks().then((albums) {
+      _tasks.addAll(albums);
     });
   }
 
   Widget _buildSuggestions() {
     return ListView.builder(
         padding: EdgeInsets.all(16.0),
-        itemCount: 20,
+        itemCount: _tasks.length * 2,
         itemBuilder: /*1*/ (context, i) {
-          if (i.isOdd) return Divider(); /*2*/
+          if (i.isOdd) return Divider();
+          /*2*/
 
           final index = i ~/ 2; /*3*/
-          return _buildRow(_suggestions[index]);
+          return _buildRow(_tasks[index]);
         });
   }
 
-  Widget _buildRow(WordPair pair) {
+  Widget _buildRow(Task task) {
     return ListTile(
       title: Text(
-        pair.asPascalCase,
+        task.title,
         style: _biggerFont,
       ),
     );
@@ -69,26 +74,23 @@ class _RandomWordsState extends State<RandomWords> {
 
   @override
   Widget build(BuildContext context) {
-    _suggestions.addAll(generateWordPairs().take(10));
     return Scaffold(
       appBar: AppBar(
-        title: Text('Startup Name Generator'),
+        title: Text('Hompi'),
       ),
       body: _buildSuggestions(),
     );
   }
 }
 
-class Album {
-  final int userId;
+class Task {
   final int id;
   final String title;
 
-  Album({this.userId, this.id, this.title});
+  Task({this.id, this.title});
 
-  factory Album.fromJson(Map<String, dynamic> json) {
-    return Album(
-      userId: json['userId'],
+  factory Task.fromJson(Map<String, dynamic> json) {
+    return Task(
       id: json['id'],
       title: json['title'],
     );
