@@ -25,13 +25,11 @@ class _RandomWordsState extends State<RandomWords> {
   Widget _buildSuggestions() {
     return ListView.builder(
         padding: EdgeInsets.all(16.0),
+        itemCount: 20,
         itemBuilder: /*1*/ (context, i) {
           if (i.isOdd) return Divider(); /*2*/
 
           final index = i ~/ 2; /*3*/
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(10)); /*4*/
-          }
           return _buildRow(_suggestions[index]);
         });
   }
@@ -47,6 +45,7 @@ class _RandomWordsState extends State<RandomWords> {
 
   @override
   Widget build(BuildContext context) {
+    _suggestions.addAll(generateWordPairs().take(10));
     return Scaffold(
       appBar: AppBar(
         title: Text('Startup Name Generator'),
