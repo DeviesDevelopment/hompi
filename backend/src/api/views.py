@@ -4,7 +4,7 @@ from .models import Task
 from .serializers import TaskSerializer
 
 class ListTask(generics.ListCreateAPIView):
-    queryset = Task.objects.all()
+    queryset = Task.objects.all().order_by("due_date")
     serializer_class = TaskSerializer
 
 class DetailTask(generics.RetrieveUpdateDestroyAPIView):
