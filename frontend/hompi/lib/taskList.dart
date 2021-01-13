@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hompi/completeTaskDialog.dart';
 import 'package:hompi/createTaskDialog.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -79,6 +80,16 @@ class _TaskListState extends State<TaskList> {
         });
   }
 
+  Future<void> _displayCompleteTaskDialog(BuildContext context, Task task) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return CompleteTaskDialog(
+            task: task,
+          );
+        });
+  }
+
   Widget _buildSuggestions() {
     return ListView.builder(
         padding: EdgeInsets.all(16.0),
@@ -98,6 +109,9 @@ class _TaskListState extends State<TaskList> {
         style: _biggerFont,
       ),
       subtitle: Text(task.dueDate.toIso8601String()),
+      onTap: () {
+        _displayCompleteTaskDialog(context, task);
+      },
     );
   }
 
