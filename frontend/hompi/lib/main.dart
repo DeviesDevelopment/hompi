@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io' show Platform;
 
 void main() => runApp(MyApp());
 
 Future<List<Task>> fetchTasks() async {
-  final response = await http.get('http://10.0.2.2:8000/api/');
+
+  var url;
+  if (Platform.isAndroid) {
+    url = 'http://10.0.2.2:8000/api/';
+  } else {
+    url = 'http://127.0.0.1:8000/api/';
+  }
+
+  final response = await http.get(url);
   if (response.statusCode == 200) {
     Iterable list = json.decode(response.body);
     return list.map((model) => Task.fromJson(model)).toList();
