@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() => runApp(MyApp());
+
+Future<List<Album>> fetchAlbum() async {
+  final response = await http.get('https://jsonplaceholder.typicode.com/albums');
+  if (response.statusCode == 200) {
+    Iterable list = json.decode(response.body);
+    return list.map((model) => Album.fromJson(model)).toList();
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load album');
+  }
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -21,6 +37,14 @@ class RandomWords extends StatefulWidget {
 class _RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
   final _biggerFont = TextStyle(fontSize: 18.0);
+
+  @override
+  initState() {
+    super.initState();
+    fetchAlbum().then((albums) {
+      print(albums[0].title);
+    });
+  }
 
   Widget _buildSuggestions() {
     return ListView.builder(
@@ -51,6 +75,22 @@ class _RandomWordsState extends State<RandomWords> {
         title: Text('Startup Name Generator'),
       ),
       body: _buildSuggestions(),
+    );
+  }
+}
+
+class Album {
+  final int userId;
+  final int id;
+  final String title;
+
+  Album({this.userId, this.id, this.title});
+
+  factory Album.fromJson(Map<String, dynamic> json) {
+    return Album(
+      userId: json['userId'],
+      id: json['id'],
+      title: json['title'],
     );
   }
 }
