@@ -27,14 +27,14 @@ Future<List<Task>> fetchTasks() async {
   }
 }
 
-void addTask() async {
+void addTask(String title) async {
   final response = await http.post(
       getBaseUrl(),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     body: jsonEncode(<String, String>{
-      'title': 'Some other task',
+      'title': title,
     }),
   );
 }
@@ -63,7 +63,6 @@ class _RandomWordsState extends State<RandomWords> {
   final _biggerFont = TextStyle(fontSize: 18.0);
   TextEditingController _textFieldController = TextEditingController();
   String valueText;
-  String codeDialog;
 
   @override
   initState() {
@@ -73,8 +72,8 @@ class _RandomWordsState extends State<RandomWords> {
     });
   }
 
-  _addTask() async {
-    await addTask();
+  _addTask(String title) async {
+    await addTask(title);
     fetchTasks().then((albums) {
       setState(() {
         _tasks.clear();
@@ -88,7 +87,7 @@ class _RandomWordsState extends State<RandomWords> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('TextField in Dialog'),
+            title: Text('Create new task'),
             content: TextField(
               onChanged: (value) {
                 setState(() {
@@ -96,7 +95,7 @@ class _RandomWordsState extends State<RandomWords> {
                 });
               },
               controller: _textFieldController,
-              decoration: InputDecoration(hintText: "Text Field in Dialog"),
+              decoration: InputDecoration(hintText: "Title"),
             ),
             actions: <Widget>[
               FlatButton(
@@ -115,7 +114,7 @@ class _RandomWordsState extends State<RandomWords> {
                 child: Text('OK'),
                 onPressed: () {
                   setState(() {
-                    codeDialog = valueText;
+                    _addTask(valueText);
                     Navigator.pop(context);
                   });
                 },
