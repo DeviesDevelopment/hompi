@@ -62,10 +62,6 @@ class RandomWords extends StatefulWidget {
 class _RandomWordsState extends State<RandomWords> {
   final _tasks = <Task>[];
   final _biggerFont = TextStyle(fontSize: 18.0);
-  TextEditingController _titleTextFieldController = TextEditingController();
-  String titleInputText;
-  TextEditingController _intervalTextFieldController = TextEditingController();
-  String intervalInputText;
 
   @override
   initState() {
@@ -89,65 +85,10 @@ class _RandomWordsState extends State<RandomWords> {
     return showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text('Create new task'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      titleInputText = value;
-                    });
-                  },
-                  controller: _titleTextFieldController,
-                  decoration: InputDecoration(hintText: "Title"),
-                ),
-                TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      intervalInputText = value;
-                    });
-                  },
-                  controller: _intervalTextFieldController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(hintText: "Interval in days"),
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              FlatButton(
-                color: Colors.red,
-                textColor: Colors.white,
-                child: Text('CANCEL'),
-                onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                    _titleTextFieldController.text = "";
-                    _intervalTextFieldController.text = "";
-                  });
-                },
-              ),
-              FlatButton(
-                color: Colors.green,
-                textColor: Colors.white,
-                child: Text('OK'),
-                onPressed: () {
-                  setState(() {
-                    Task newTask = Task.dummy(
-                        title: titleInputText,
-                        dueDate: DateTime.now().add(new Duration(days: int.parse(intervalInputText))),
-                        interval: intervalInputText
-                    );
-                    _addTask(newTask);
-                    Navigator.pop(context);
-                    _titleTextFieldController.text = "";
-                    _intervalTextFieldController.text = "";
-                  });
-                },
-              ),
-
-            ],
+          return CreateTaskDialog(
+            createTask: (Task task) {
+              _addTask(task);
+            },
           );
         });
   }
@@ -207,6 +148,90 @@ class Task {
       title: json['title'],
       dueDate: DateTime.parse(json['due_date']),
       interval: json['interval'],
+    );
+  }
+}
+
+class CreateTaskDialog extends StatefulWidget {
+  final Function createTask;
+
+  CreateTaskDialog({this.createTask});
+
+  @override
+  _CreateTaskDialogState createState() => _CreateTaskDialogState(createTask: this.createTask);
+}
+
+class _CreateTaskDialogState extends State<CreateTaskDialog> {
+  final Function createTask;
+
+  TextEditingController _titleTextFieldController = TextEditingController();
+  String titleInputText;
+  TextEditingController _intervalTextFieldController = TextEditingController();
+  String intervalInputText;
+
+  _CreateTaskDialogState({this.createTask});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Create new task'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            onChanged: (value) {
+              setState(() {
+                titleInputText = value;
+              });
+            },
+            controller: _titleTextFieldController,
+            decoration: InputDecoration(hintText: "Title"),
+          ),
+          TextField(
+            onChanged: (value) {
+              setState(() {
+                intervalInputText = value;
+              });
+            },
+            controller: _intervalTextFieldController,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(hintText: "Interval in days"),
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        FlatButton(
+          color: Colors.red,
+          textColor: Colors.white,
+          child: Text('CANCEL'),
+          onPressed: () {
+            setState(() {
+              Navigator.pop(context);
+              _titleTextFieldController.text = "";
+              _intervalTextFieldController.text = "";
+            });
+          },
+        ),
+        FlatButton(
+          color: Colors.green,
+          textColor: Colors.white,
+          child: Text('OK'),
+          onPressed: () {
+            setState(() {
+              Task newTask = Task.dummy(
+                  title: titleInputText,
+                  dueDate: DateTime.now().add(new Duration(days: int.parse(intervalInputText))),
+                  interval: intervalInputText
+              );
+              createTask(newTask);
+              Navigator.pop(context);
+              _titleTextFieldController.text = "";
+              _intervalTextFieldController.text = "";
+            });
+          },
+        ),
+
+      ],
     );
   }
 }
