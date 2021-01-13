@@ -18,12 +18,8 @@ Future<List<Task>> fetchTasks() async {
   if (response.statusCode == 200) {
     Iterable list = json.decode(response.body);
     return list.map((model) => Task.fromJson(model)).toList();
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
   } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
+    throw Exception('Failed to load tasks');
   }
 }
 
@@ -43,7 +39,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Homepi',
+      title: 'Hompi',
       home: RandomWords(),
       theme: ThemeData(
         primarySwatch: Colors.green,
@@ -67,17 +63,17 @@ class _RandomWordsState extends State<RandomWords> {
   @override
   initState() {
     super.initState();
-    fetchTasks().then((albums) {
-      _tasks.addAll(albums);
+    fetchTasks().then((tasks) {
+      _tasks.addAll(tasks);
     });
   }
 
   _addTask(String title) async {
     await addTask(title);
-    fetchTasks().then((albums) {
+    fetchTasks().then((tasks) {
       setState(() {
         _tasks.clear();
-        _tasks.addAll(albums);
+        _tasks.addAll(tasks);
       });
     });
   }
@@ -129,11 +125,10 @@ class _RandomWordsState extends State<RandomWords> {
     return ListView.builder(
         padding: EdgeInsets.all(16.0),
         itemCount: _tasks.length * 2,
-        itemBuilder: /*1*/ (context, i) {
+        itemBuilder: (context, i) {
           if (i.isOdd) return Divider();
-          /*2*/
 
-          final index = i ~/ 2; /*3*/
+          final index = i ~/ 2;
           return _buildRow(_tasks[index]);
         });
   }
