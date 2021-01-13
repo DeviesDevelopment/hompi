@@ -1,8 +1,8 @@
 class Task {
   int id;
-  final String title;
-  final DateTime dueDate;
-  final String interval;
+  String title;
+  DateTime dueDate;
+  String interval;
 
   Task({this.id, this.title, this.dueDate, this.interval});
 
@@ -15,5 +15,9 @@ class Task {
       dueDate: DateTime.parse(json['due_date']),
       interval: json['interval'],
     );
+  }
+
+  int getIntervalInDays() {
+    return int.parse(interval.split(" ")[0]);
   }
 }

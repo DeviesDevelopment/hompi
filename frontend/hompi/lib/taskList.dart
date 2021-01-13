@@ -24,7 +24,7 @@ Future<List<Task>> fetchTasks() async {
   }
 }
 
-void addTask(Task task) async {
+Future<void> addTask(Task task) async {
   final response = await http.post(
     getBaseUrl(),
     headers: <String, String>{
@@ -38,6 +38,24 @@ void addTask(Task task) async {
   );
   if (response.statusCode != 201) {
     throw Exception('Failed to create task');
+  }
+}
+
+Future<void> updateTask(Task task) async {
+  final response = await http.put(
+    getBaseUrl() + task.id.toString() + "/",
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'id': task.id.toString(),
+      'title': task.title,
+      'due_date': task.dueDate.toIso8601String(),
+      'interval': task.interval,
+    }),
+  );
+  if (response.statusCode != 200) {
+    throw Exception('Failed to update task');
   }
 }
 
@@ -68,6 +86,17 @@ class _TaskListState extends State<TaskList> {
     });
   }
 
+  _markTaskAsComplete(Task task) async {
+    task.dueDate = DateTime.now().add(new Duration(days: task.getIntervalInDays()));
+    await updateTask(task);
+    fetchTasks().then((tasks) {
+      setState(() {
+        _tasks.clear();
+        _tasks.addAll(tasks);
+      });
+    });
+  }
+
   Future<void> _displayTextInputDialog(BuildContext context) async {
     return showDialog(
         context: context,
@@ -86,6 +115,9 @@ class _TaskListState extends State<TaskList> {
         builder: (context) {
           return CompleteTaskDialog(
             task: task,
+            markAsComplete: (Task task) {
+              _markTaskAsComplete(task);
+            },
           );
         });
   }
