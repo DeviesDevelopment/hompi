@@ -33,7 +33,7 @@ Future<void> addTask(Task task) async {
     body: jsonEncode(<String, String>{
       'title': task.title,
       'due_date': task.dueDate.toIso8601String(),
-      'interval': task.interval + ' 00:00:00',
+      'interval': task.interval,
     }),
   );
   if (response.statusCode != 201) {

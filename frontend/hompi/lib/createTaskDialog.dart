@@ -70,7 +70,7 @@ class _CreateTaskDialogState extends State<CreateTaskDialog> {
               Task newTask = Task.dummy(
                   title: titleInputText,
                   dueDate: DateTime.now().add(new Duration(days: int.parse(intervalInputText))),
-                  interval: intervalInputText
+                  interval: intervalInputText + ' 00:00:00',
               );
               createTask(newTask);
               Navigator.pop(context);
