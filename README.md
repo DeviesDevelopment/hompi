@@ -36,3 +36,6 @@ Create a super user:
     python manage.py createsuperuser
 
 Start the server and go to http://127.0.0.1:8000/admin/
+
+## Browsable API
+Start the server and go to http://127.0.0.1:8000/api/
