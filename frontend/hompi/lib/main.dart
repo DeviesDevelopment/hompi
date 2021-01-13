@@ -5,16 +5,16 @@ import 'dart:io' show Platform;
 
 void main() => runApp(MyApp());
 
-Future<List<Task>> fetchTasks() async {
-
-  var url;
+getBaseUrl() {
   if (Platform.isAndroid) {
-    url = 'http://10.0.2.2:8000/api/';
+    return 'http://10.0.2.2:8000/api/';
   } else {
-    url = 'http://127.0.0.1:8000/api/';
+    return 'http://127.0.0.1:8000/api/';
   }
+}
 
-  final response = await http.get(url);
+Future<List<Task>> fetchTasks() async {
+  final response = await http.get(getBaseUrl());
   if (response.statusCode == 200) {
     Iterable list = json.decode(response.body);
     return list.map((model) => Task.fromJson(model)).toList();
@@ -25,6 +25,18 @@ Future<List<Task>> fetchTasks() async {
     // then throw an exception.
     throw Exception('Failed to load album');
   }
+}
+
+void addTask() async {
+  final response = await http.post(
+      getBaseUrl(),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    body: jsonEncode(<String, String>{
+      'title': 'Some other task',
+    }),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -58,6 +70,16 @@ class _RandomWordsState extends State<RandomWords> {
     });
   }
 
+  _addTask() async {
+    await addTask();
+    fetchTasks().then((albums) {
+      setState(() {
+        _tasks.clear();
+        _tasks.addAll(albums);
+      });
+    });
+  }
+
   Widget _buildSuggestions() {
     return ListView.builder(
         padding: EdgeInsets.all(16.0),
@@ -83,11 +105,15 @@ class _RandomWordsState extends State<RandomWords> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Hompi'),
-      ),
-      body: _buildSuggestions(),
-    );
+        appBar: AppBar(
+          title: Text('Hompi'),
+        ),
+        body: _buildSuggestions(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _addTask,
+          tooltip: 'Increment',
+          child: Icon(Icons.add),
+        ));
   }
 }
 
@@ -102,5 +128,9 @@ class Task {
       id: json['id'],
       title: json['title'],
     );
+  }
+
+  Map toJson() {
+    return {'title': title};
   }
 }
