@@ -92,6 +92,7 @@ class _RandomWordsState extends State<RandomWords> {
           return AlertDialog(
             title: Text('Create new task'),
             content: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
                   onChanged: (value) {
