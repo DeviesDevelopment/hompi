@@ -28,3 +28,11 @@ Run Database migrations:
 Create migrations after you have made model changes (don't forget to run the migrations afterwards):
 
     python manage.py makemigrations api
+
+## Django admin
+
+Create a super user:
+
+    python manage.py createsuperuser
+
+Start the server and go to http://127.0.0.1:8000/admin/
