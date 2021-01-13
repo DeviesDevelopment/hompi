@@ -139,6 +139,7 @@ class _RandomWordsState extends State<RandomWords> {
         task.title,
         style: _biggerFont,
       ),
+      subtitle: Text(task.dueDate.toIso8601String()),
     );
   }
 
@@ -162,13 +163,15 @@ class _RandomWordsState extends State<RandomWords> {
 class Task {
   final int id;
   final String title;
+  final DateTime dueDate;
 
-  Task({this.id, this.title});
+  Task({this.id, this.title, this.dueDate});
 
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
       id: json['id'],
       title: json['title'],
+      dueDate: DateTime.parse(json['due_date']),
     );
   }
 
