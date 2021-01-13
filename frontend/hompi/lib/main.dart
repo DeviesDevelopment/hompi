@@ -123,6 +123,8 @@ class _RandomWordsState extends State<RandomWords> {
                 onPressed: () {
                   setState(() {
                     Navigator.pop(context);
+                    _titleTextFieldController.text = "";
+                    _intervalTextFieldController.text = "";
                   });
                 },
               ),
@@ -139,6 +141,8 @@ class _RandomWordsState extends State<RandomWords> {
                     );
                     _addTask(newTask);
                     Navigator.pop(context);
+                    _titleTextFieldController.text = "";
+                    _intervalTextFieldController.text = "";
                   });
                 },
               ),
