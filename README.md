@@ -22,4 +22,9 @@ Start Django server:
 Run Database migrations:
 
     python manage.py migrate
+
+## Database migrations
+
+Create migrations after you have made model changes (don't forget to run the migrations afterwards):
+
     python manage.py makemigrations api
