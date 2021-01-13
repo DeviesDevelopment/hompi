@@ -8,5 +8,6 @@ class TaskSerializer(serializers.ModelSerializer):
             'id',
             'title',
             'due_date',
+            'interval',
         )
         model = Task
