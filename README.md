@@ -10,3 +10,7 @@ Home Planner by Hisingen Heavy Metal Squad
 Activate virtual Python environment:
 
     source backend/bin/activate
+
+Start Django server:
+
+    python manage.py runserver
