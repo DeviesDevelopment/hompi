@@ -23,16 +23,21 @@ Future<List<Task>> fetchTasks() async {
   }
 }
 
-void addTask(String title) async {
+void addTask(Task task) async {
   final response = await http.post(
       getBaseUrl(),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     body: jsonEncode(<String, String>{
-      'title': title,
+      'title': task.title,
+      'due_date': DateTime.now().toIso8601String(),
+      'interval': task.interval + ' 00:00:00',
     }),
   );
+  if (response.statusCode != 201) {
+    throw Exception('Failed to create task');
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -57,8 +62,10 @@ class RandomWords extends StatefulWidget {
 class _RandomWordsState extends State<RandomWords> {
   final _tasks = <Task>[];
   final _biggerFont = TextStyle(fontSize: 18.0);
-  TextEditingController _textFieldController = TextEditingController();
-  String valueText;
+  TextEditingController _titleTextFieldController = TextEditingController();
+  String titleInputText;
+  TextEditingController _intervalTextFieldController = TextEditingController();
+  String intervalInputText;
 
   @override
   initState() {
@@ -68,8 +75,8 @@ class _RandomWordsState extends State<RandomWords> {
     });
   }
 
-  _addTask(String title) async {
-    await addTask(title);
+  _addTask(Task task) async {
+    await addTask(task);
     fetchTasks().then((tasks) {
       setState(() {
         _tasks.clear();
@@ -84,14 +91,28 @@ class _RandomWordsState extends State<RandomWords> {
         builder: (context) {
           return AlertDialog(
             title: Text('Create new task'),
-            content: TextField(
-              onChanged: (value) {
-                setState(() {
-                  valueText = value;
-                });
-              },
-              controller: _textFieldController,
-              decoration: InputDecoration(hintText: "Title"),
+            content: Column(
+              children: [
+                TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      titleInputText = value;
+                    });
+                  },
+                  controller: _titleTextFieldController,
+                  decoration: InputDecoration(hintText: "Title"),
+                ),
+                TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      intervalInputText = value;
+                    });
+                  },
+                  controller: _intervalTextFieldController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(hintText: "Interval in days"),
+                ),
+              ],
             ),
             actions: <Widget>[
               FlatButton(
@@ -110,7 +131,12 @@ class _RandomWordsState extends State<RandomWords> {
                 child: Text('OK'),
                 onPressed: () {
                   setState(() {
-                    _addTask(valueText);
+                    Task newTask = Task.dummy(
+                        title: titleInputText,
+                        dueDate: DateTime.now(),
+                        interval: intervalInputText
+                    );
+                    _addTask(newTask);
                     Navigator.pop(context);
                   });
                 },
@@ -161,21 +187,21 @@ class _RandomWordsState extends State<RandomWords> {
 }
 
 class Task {
-  final int id;
+  int id;
   final String title;
   final DateTime dueDate;
+  final String interval;
 
-  Task({this.id, this.title, this.dueDate});
+  Task({this.id, this.title, this.dueDate, this.interval});
+
+  Task.dummy({this.title, this.dueDate, this.interval});
 
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
       id: json['id'],
       title: json['title'],
       dueDate: DateTime.parse(json['due_date']),
+      interval: json['interval'],
     );
-  }
-
-  Map toJson() {
-    return {'title': title};
   }
 }
