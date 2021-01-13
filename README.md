@@ -39,3 +39,10 @@ Start the server and go to http://127.0.0.1:8000/admin/
 
 ## Browsable API
 Start the server and go to http://127.0.0.1:8000/api/
+
+## Frontend (flutter)
+Install dependencies
+
+    cd `frontend/hompi`
+    dart pub get
+
