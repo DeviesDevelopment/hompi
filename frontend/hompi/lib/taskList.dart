@@ -7,15 +7,20 @@ import 'dart:io' show Platform;
 import 'package:hompi/task.dart';
 
 getBaseUrl() {
-  if (Platform.isAndroid) {
+  return 'https://hompi-backend.herokuapp.com/api/';
+
+  // For local development:
+  /*if (Platform.isAndroid) {
     return 'http://10.0.2.2:8000/api/';
   } else {
     return 'http://127.0.0.1:8000/api/';
-  }
+  }*/
 }
 
 Future<List<Task>> fetchTasks() async {
+  print("Fetching tasks");
   final response = await http.get(getBaseUrl());
+  print("Got response: "+ response.statusCode.toString());
   if (response.statusCode == 200) {
     Iterable list = json.decode(response.body);
     return list.map((model) => Task.fromJson(model)).toList();
@@ -72,7 +77,9 @@ class _TaskListState extends State<TaskList> {
   initState() {
     super.initState();
     fetchTasks().then((tasks) {
-      _tasks.addAll(tasks);
+      setState(() {
+        _tasks.addAll(tasks);
+      });
     });
   }
 
