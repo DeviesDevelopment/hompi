@@ -18,6 +18,11 @@ class Task {
   }
 
   int getIntervalInDays() {
-    return int.parse(interval.split(" ")[0]);
+    var splitted = interval.split(" ");
+
+    if (splitted.length == 1) {
+      return 0;
+    }
+    return int.parse(splitted[0]);
   }
 }
