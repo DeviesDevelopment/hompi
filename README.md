@@ -3,8 +3,8 @@ Home Planner by Hisingen Heavy Metal Squad
 
 ## Backend (Django)
 ### Requirements
-* Python 3
-* pip
+* [Python 3](https://www.python.org/downloads/)
+* [pip](https://pip.pypa.io/en/stable/installing/)
 
 ### Setup
 
@@ -38,6 +38,11 @@ Create migrations after you have made model changes (don't forget to run the mig
 
     python manage.py makemigrations api
 
+### Adding dependencies
+If you add a new dependency, remember to run:
+
+    pip freeze > requirements.txt
+
 ### Django admin
 
 Create a super user:
@@ -53,11 +58,10 @@ Start the server and go to http://127.0.0.1:8000/api/
 
 ### Requirements
 
-* Flutter
+* [Flutter](https://flutter.dev/docs/get-started/install). Then run `flutter doctor` and follow the instructions.
 ### Setup
 
 Install dependencies:
 
     cd frontend/hompi
-    dart pub get
-
+    flutter pub get
