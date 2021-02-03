@@ -15,6 +15,10 @@ Start the local server using Docker:
     docker build -t hompi .
     docker run -e PORT=8000 -p 8000:8000 hompi
 
+If you need to create an admin user, run the container like this:
+
+    docker run -e PORT=8000 -p 8000:8000 -e DJANGO_SUPERUSER_USERNAME=admin -e DJANGO_SUPERUSER_PASSWORD=admin -e DJANGO_SUPERUSER_EMAIL=admin@admin.se hompi
+
 ### Database migrations
 
 Create migrations after you have made model changes (don't forget to restart the container afterwards):

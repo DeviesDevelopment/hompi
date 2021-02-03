@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:hompi/task.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 getBaseUrl() {
   return 'https://hompi-backend.herokuapp.com/api/';
@@ -17,9 +18,23 @@ getBaseUrl() {
   }*/
 }
 
-Future<List<Task>> fetchTasks() async {
+Future<List<Task>> fetchTasks(BuildContext context) async {
   print("Fetching tasks");
-  final response = await http.get(getBaseUrl());
+
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('token') ?? "";
+  print("Your token is $token");
+
+  if (token == "") {
+    Navigator.pushReplacementNamed(context, '/login');
+  }
+
+  final response = await http.get(
+    getBaseUrl(),
+    headers: <String, String>{
+      'Authorization': 'Token $token',
+    },
+  );
   print("Got response: "+ response.statusCode.toString());
   if (response.statusCode == 200) {
     Iterable list = json.decode(response.body);
@@ -29,11 +44,19 @@ Future<List<Task>> fetchTasks() async {
   }
 }
 
-Future<void> addTask(Task task) async {
+Future<void> addTask(Task task, BuildContext context) async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('token') ?? "";
+  print("Your token is $token");
+  if (token == "") {
+    Navigator.pushReplacementNamed(context, '/login');
+  }
+
   final response = await http.post(
     getBaseUrl(),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Token $token',
     },
     body: jsonEncode(<String, String>{
       'title': task.title,
@@ -76,16 +99,16 @@ class _TaskListState extends State<TaskList> {
   @override
   initState() {
     super.initState();
-    fetchTasks().then((tasks) {
+    fetchTasks(context).then((tasks) {
       setState(() {
         _tasks.addAll(tasks);
       });
     });
   }
 
-  _addTask(Task task) async {
-    await addTask(task);
-    fetchTasks().then((tasks) {
+  _addTask(Task task, BuildContext context) async {
+    await addTask(task, context);
+    fetchTasks(context).then((tasks) {
       setState(() {
         _tasks.clear();
         _tasks.addAll(tasks);
@@ -93,10 +116,10 @@ class _TaskListState extends State<TaskList> {
     });
   }
 
-  _markTaskAsComplete(Task task) async {
+  _markTaskAsComplete(Task task, BuildContext context) async {
     task.dueDate = DateTime.now().add(new Duration(days: task.getIntervalInDays()));
     await updateTask(task);
-    fetchTasks().then((tasks) {
+    fetchTasks(context).then((tasks) {
       setState(() {
         _tasks.clear();
         _tasks.addAll(tasks);
@@ -110,7 +133,7 @@ class _TaskListState extends State<TaskList> {
         builder: (context) {
           return CreateTaskDialog(
             createTask: (Task task) {
-              _addTask(task);
+              _addTask(task, context);
             },
           );
         });
@@ -123,7 +146,7 @@ class _TaskListState extends State<TaskList> {
           return CompleteTaskDialog(
             task: task,
             markAsComplete: (Task task) {
-              _markTaskAsComplete(task);
+              _markTaskAsComplete(task, context);
             },
           );
         });

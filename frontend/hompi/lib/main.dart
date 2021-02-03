@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hompi/loginPage.dart';
 import 'package:hompi/taskList.dart';
 
 void main() => runApp(MyApp());
@@ -8,11 +9,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Hompi',
-      home: TaskList(),
       theme: ThemeData(
         primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      home: TaskList(),
+      routes: {
+        '/login': (context) => LoginPage(),
+        '/tasks': (context) => TaskList(),
+      },
     );
   }
 }
