@@ -5,11 +5,12 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
-COPY src/requirements.txt ./
-RUN pip install -r requirements.txt
+
 COPY src .
+COPY start_server.sh .
+RUN chmod +x start_server.sh
 
 # Only used for local testing (ignored by Heroku):
 EXPOSE $PORT
 
-CMD ["sh", "-c", "python manage.py runserver 0.0.0.0:$PORT"]
+CMD ["./start_server.sh"]

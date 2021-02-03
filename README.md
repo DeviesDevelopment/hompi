@@ -5,36 +5,19 @@ Home Planner by Hisingen Heavy Metal Squad
 ### Requirements
 * [Python 3](https://www.python.org/downloads/)
 * [pip](https://pip.pypa.io/en/stable/installing/)
+* Docker
 
 ### Setup
 
-Create a virtual Python environment:
+Start the local server using Docker:
 
-    python -m venv backend
-
-Activate virtual Python environment:
-
-    source backend/bin/activate
-
-Change to `src` directory:
-
-    cd backend/src
-
-Install Python dependencies:
-
-    pip install -r requirements.txt
-
-Start Django server:
-
-    python manage.py runserver
-
-Run Database migrations:
-
-    python manage.py migrate
+    cd backend
+    docker build -t hompi .
+    docker run -e PORT=8000 -p 8000:8000 hompi
 
 ### Database migrations
 
-Create migrations after you have made model changes (don't forget to run the migrations afterwards):
+Create migrations after you have made model changes (don't forget to restart the container afterwards):
 
     python manage.py makemigrations api
 
@@ -54,6 +37,23 @@ Start the server and go to http://127.0.0.1:8000/admin/
 ### Browsable API
 Start the server and go to http://127.0.0.1:8000/api/
 
+### Deployment
+The Django backend is hosted on Heroku at https://hompi-backend.herokuapp.com/.
+
+To deploy a new version:
+
+Install Heroku CLI.
+
+Login:
+
+    heroku login
+    heroku container:login
+
+Build and deploy Docker container:
+
+    heroku container:push --app hompi-backend web
+    heroku container:release --app hompi-backend web
+
 ## Frontend (Flutter)
 
 ### Requirements
@@ -65,3 +65,7 @@ Install dependencies:
 
     cd frontend/hompi
     flutter pub get
+
+
+
+
