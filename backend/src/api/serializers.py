@@ -9,5 +9,6 @@ class TaskSerializer(serializers.ModelSerializer):
             'title',
             'due_date',
             'interval',
+            'user',
         )
         model = Task

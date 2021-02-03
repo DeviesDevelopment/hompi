@@ -2,6 +2,8 @@
 
 pip install -r requirements.txt
 
+python manage.py makemigrations api
+
 python manage.py migrate
 
 if [ -n "$DJANGO_SUPERUSER_USERNAME" ] && [ -n "$DJANGO_SUPERUSER_PASSWORD" ] ; then
