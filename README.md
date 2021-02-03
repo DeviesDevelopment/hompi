@@ -15,6 +15,10 @@ Change to `src` directory:
 
     cd backend/src
 
+Install Python dependencies:
+
+    pip install -r requirements.txt
+
 Start Django server:
 
     python manage.py runserver
