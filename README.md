@@ -1,15 +1,16 @@
 # hompi
 Home Planner by Hisingen Heavy Metal Squad
 
-## Requirements
+## Backend (Django)
+### Requirements
 * Python 3
 * pip
 
-## Setup
+### Setup
 
 Create a virtual Python environment:
 
-    python3 -m venv backend
+    python -m venv backend
 
 Activate virtual Python environment:
 
@@ -31,13 +32,13 @@ Run Database migrations:
 
     python manage.py migrate
 
-## Database migrations
+### Database migrations
 
 Create migrations after you have made model changes (don't forget to run the migrations afterwards):
 
     python manage.py makemigrations api
 
-## Django admin
+### Django admin
 
 Create a super user:
 
@@ -45,12 +46,18 @@ Create a super user:
 
 Start the server and go to http://127.0.0.1:8000/admin/
 
-## Browsable API
+### Browsable API
 Start the server and go to http://127.0.0.1:8000/api/
 
-## Frontend (flutter)
-Install dependencies
+## Frontend (Flutter)
 
-    cd `frontend/hompi`
+### Requirements
+
+* Flutter
+### Setup
+
+Install dependencies:
+
+    cd frontend/hompi
     dart pub get
 
