@@ -13,4 +13,4 @@ RUN chmod +x start_server.sh
 # Only used for local testing (ignored by Heroku):
 EXPOSE $PORT
 
-CMD ["./start_server.sh"]
+ENTRYPOINT ["./start_server.sh"]
