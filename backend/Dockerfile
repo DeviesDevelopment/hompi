@@ -9,5 +9,7 @@ COPY src/requirements.txt ./
 RUN pip install -r requirements.txt
 COPY src .
 
-EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Only used for local testing (ignored by Heroku):
+EXPOSE $PORT
+
+CMD ["sh", "-c", "python manage.py runserver 0.0.0.0:$PORT"]
