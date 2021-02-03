@@ -26,7 +26,8 @@ SECRET_KEY = '$%%mo2$qxa=+8m&)f+=&1cjb$nr5$)hwfx2979h6q0$rbg7y9n'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'hompi.eba-ak4mrywp.us-west-2.elasticbeanstalk.com',
+    'hompi-backend.herokuapp.com',
+    'localhost',
     '127.0.0.1',
     '10.0.2.2', # To access local server from Android emulator
 ]
