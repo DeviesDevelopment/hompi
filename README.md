@@ -7,6 +7,10 @@ Home Planner by Hisingen Heavy Metal Squad
 
 ## Setup
 
+Create a virtual Python environment:
+
+    python3 -m venv backend
+
 Activate virtual Python environment:
 
     source backend/bin/activate
