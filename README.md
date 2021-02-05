@@ -49,8 +49,13 @@ Login:
 
 Build and deploy Docker container:
 
+    cd backend
     heroku container:push --app hompi-backend web
     heroku container:release --app hompi-backend web
+
+Follow logs in real time:
+
+    heroku logs --app=hompi-backend --tail
 
 ## Frontend (Flutter)
 
