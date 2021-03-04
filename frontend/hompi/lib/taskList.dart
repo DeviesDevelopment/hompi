@@ -47,8 +47,7 @@ Future<List<Task>> fetchTasks(BuildContext context) async {
     return list.map((model) => Task.fromJson(model)).toList();
   } else {
     print("Invalid token?");
-    prefs.remove('token');
-    Navigator.pushReplacementNamed(context, '/login');
+    await logout(context);
   }
 }
 
@@ -74,8 +73,7 @@ Future<void> addTask(Task task, BuildContext context) async {
   );
   if (response.statusCode != 201) {
     print("Invalid token?");
-    prefs.remove('token');
-    Navigator.pushReplacementNamed(context, '/login');
+    await logout(context);
   }
 }
 
