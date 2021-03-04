@@ -44,7 +44,7 @@ Future<void> createUser(String username, String password, BuildContext context) 
   final prefs = await SharedPreferences.getInstance();
   prefs.setString('token', token);
 
-  Navigator.pushReplacementNamed(context, '/tasks');
+  Navigator.pushNamedAndRemoveUntil(context, "/tasks", (r) => false);
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
