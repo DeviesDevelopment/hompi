@@ -62,11 +62,17 @@ class _LoginPageState extends State<LoginPage> {
             },
           ),
           Divider(),
-          Text("Not registered yet?"),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Text("Not registered yet?"),
+          ),
           FlatButton(
-            color: Colors.green,
-            textColor: Colors.white,
-            child: Text('Create New User'),
+            color: Theme.of(context).canvasColor,
+            textColor: Theme.of(context).accentColor,
+            child: Text(
+                'Create New User',
+                style: TextStyle(fontSize: 17),
+            ),
             onPressed: () {
               Navigator.pushNamed(context, '/registration');
             },

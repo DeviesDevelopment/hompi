@@ -55,15 +55,24 @@ class _UsernameAndPasswordState extends State<UsernameAndPassword> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-          child: FlatButton(
-            color: Colors.green,
-            textColor: Colors.white,
-            child: Text(buttonText),
-            onPressed: () {
-              buttonPressed(usernameInput, passwordInput);
-            },
+          child: ButtonTheme(
+            minWidth: 200.0,
+            height: 42.0,
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: BorderSide(color: Colors.green)),
+              onPressed: () {
+                buttonPressed(usernameInput, passwordInput);
+              },
+              color: Theme.of(context).accentColor,
+              textColor: Colors.white,
+              child: Text(buttonText.toUpperCase(),
+                  style: TextStyle(fontSize: 15)),
+            ),
           ),
         ),
+
       ],
     );
   }
