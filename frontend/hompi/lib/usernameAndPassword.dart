@@ -43,6 +43,9 @@ class _UsernameAndPasswordState extends State<UsernameAndPassword> {
           },
           controller: _passwordController,
           decoration: InputDecoration(hintText: "Password"),
+          obscureText: true,
+          enableSuggestions: false,
+          autocorrect: false,
         ),
         FlatButton(
           color: Colors.green,
