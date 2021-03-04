@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:hompi/task.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 getBaseUrl() {
   return 'https://hompi-backend.herokuapp.com/api/';
@@ -187,11 +188,15 @@ class _TaskListState extends State<TaskList> {
         task.title,
         style: _biggerFont,
       ),
-      subtitle: Text(task.dueDate.toIso8601String()),
+      subtitle: _buildDueDate(task.dueDate),
       onTap: () {
         _displayCompleteTaskDialog(context, task);
       },
     );
+  }
+  
+  Widget _buildDueDate(DateTime dueDate) {
+    return Text("Due on " + DateFormat('yyyy-MM-dd').format(dueDate));
   }
 
   @override
