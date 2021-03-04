@@ -33,7 +33,7 @@ Future<void> createUser(String username, String password, BuildContext context) 
       'password2': password,
     }),
   );
-  if (response.statusCode != 200) {
+  if (response.statusCode != 201) {
     throw Exception('Failed to login');
   }
 
