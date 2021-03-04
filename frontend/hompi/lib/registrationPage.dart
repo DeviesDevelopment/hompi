@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hompi/usernameAndPassword.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -47,12 +48,6 @@ Future<void> createUser(String username, String password, BuildContext context) 
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  TextEditingController _usernameController = TextEditingController();
-  String usernameInput;
-
-  TextEditingController _passwordController = TextEditingController();
-  String passwordInput;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,30 +56,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
       ),
       body: Column(
         children: [
-          TextField(
-            onChanged: (value) {
-              setState(() {
-                usernameInput = value;
-              });
-            },
-            controller: _usernameController,
-            decoration: InputDecoration(hintText: "Username"),
-          ),
-          TextField(
-            onChanged: (value) {
-              setState(() {
-                passwordInput = value;
-              });
-            },
-            controller: _passwordController,
-            decoration: InputDecoration(hintText: "Password"),
-          ),
-          FlatButton(
-            color: Colors.green,
-            textColor: Colors.white,
-            child: Text('Create User'),
-            onPressed: () {
-              createUser(usernameInput, passwordInput, context);
+          UsernameAndPassword(
+            buttonText: 'Create User',
+            buttonPressed: (String username, String password) {
+              createUser(username, password, context);
             },
           ),
         ],

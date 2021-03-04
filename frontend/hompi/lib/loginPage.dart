@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hompi/usernameAndPassword.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -46,12 +47,6 @@ Future<void> login(String username, String password, BuildContext context) async
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _usernameController = TextEditingController();
-  String usernameInput;
-
-  TextEditingController _passwordController = TextEditingController();
-  String passwordInput;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,30 +55,10 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Column(
         children: [
-          TextField(
-            onChanged: (value) {
-              setState(() {
-                usernameInput = value;
-              });
-            },
-            controller: _usernameController,
-            decoration: InputDecoration(hintText: "Username"),
-          ),
-          TextField(
-            onChanged: (value) {
-              setState(() {
-                passwordInput = value;
-              });
-            },
-            controller: _passwordController,
-            decoration: InputDecoration(hintText: "Password"),
-          ),
-          FlatButton(
-            color: Colors.green,
-            textColor: Colors.white,
-            child: Text('Login'),
-            onPressed: () {
-              login(usernameInput, passwordInput, context);
+          UsernameAndPassword(
+            buttonText: 'Login',
+            buttonPressed: (String username, String password) {
+              login(username, password, context);
             },
           ),
           Divider(),
