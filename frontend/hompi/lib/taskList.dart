@@ -40,7 +40,9 @@ Future<List<Task>> fetchTasks(BuildContext context) async {
     Iterable list = json.decode(response.body);
     return list.map((model) => Task.fromJson(model)).toList();
   } else {
-    throw Exception('Failed to load tasks');
+    print("Invalid token?");
+    prefs.remove('token');
+    Navigator.pushReplacementNamed(context, '/login');
   }
 }
 
@@ -65,7 +67,9 @@ Future<void> addTask(Task task, BuildContext context) async {
     }),
   );
   if (response.statusCode != 201) {
-    throw Exception('Failed to create task');
+    print("Invalid token?");
+    prefs.remove('token');
+    Navigator.pushReplacementNamed(context, '/login');
   }
 }
 
