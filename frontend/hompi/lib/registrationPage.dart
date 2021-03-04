@@ -23,13 +23,14 @@ getBaseUrl() {
 Future<void> createUser(String username, String password, BuildContext context) async {
   print("Logging in...");
   final response = await http.post(
-    getBaseUrl() + 'rest-auth/login/',
+    getBaseUrl() + 'dj-rest-auth/registration/',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(<String, String>{
       'username': username,
-      'password': password,
+      'password1': password,
+      'password2': password,
     }),
   );
   if (response.statusCode != 200) {

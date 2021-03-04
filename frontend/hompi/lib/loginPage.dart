@@ -23,7 +23,7 @@ getBaseUrl() {
 Future<void> login(String username, String password, BuildContext context) async {
   print("Logging in...");
   final response = await http.post(
-    getBaseUrl() + 'rest-auth/login/',
+    getBaseUrl() + 'dj-rest-auth/login/',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
