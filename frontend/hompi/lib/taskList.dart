@@ -18,6 +18,12 @@ getBaseUrl() {
   }*/
 }
 
+Future<void> logout(BuildContext context) async {
+  final prefs = await SharedPreferences.getInstance();
+  prefs.remove('token');
+  Navigator.pushReplacementNamed(context, '/login');
+}
+
 Future<List<Task>> fetchTasks(BuildContext context) async {
   print("Fetching tasks");
 
@@ -186,6 +192,15 @@ class _TaskListState extends State<TaskList> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Hompi'),
+            actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.logout),
+                tooltip: 'Logout',
+                onPressed: () async {
+                  await logout(context);
+              },
+            ),
+          ]
         ),
         body: _buildSuggestions(),
         floatingActionButton: FloatingActionButton(
