@@ -51,7 +51,8 @@ Future<List<Task>> fetchTasks(BuildContext context) async {
   );
   print("Got response: "+ response.statusCode.toString());
   if (response.statusCode == 200) {
-    Iterable list = json.decode(response.body);
+    String body = utf8.decode(response.bodyBytes);
+    Iterable list = json.decode(body);
     return list.map((model) => Task.fromJson(model)).toList();
   } else {
     print('Failed to fetch tasks: ' + response.statusCode.toString());
