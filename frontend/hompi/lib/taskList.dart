@@ -24,6 +24,13 @@ Future<void> logout(BuildContext context) async {
   Navigator.pushReplacementNamed(context, '/login');
 }
 
+Future<String> getToken() async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('token') ?? "";
+  print("Your token is $token");
+  return token;
+}
+
 Future<List<Task>> fetchTasks(BuildContext context) async {
   print("Fetching tasks");
 
@@ -78,10 +85,12 @@ Future<void> addTask(Task task, BuildContext context) async {
 }
 
 Future<void> updateTask(Task task) async {
+  String token = await getToken();
   final response = await http.put(
     getBaseUrl() + task.id.toString() + "/",
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Token $token',
     },
     body: jsonEncode(<String, String>{
       'id': task.id.toString(),
