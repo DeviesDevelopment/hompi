@@ -19,10 +19,18 @@ If you need to create an admin user, run the container like this:
 
     docker run -e PORT=8000 -p 8000:8000 -e DJANGO_SUPERUSER_USERNAME=admin -e DJANGO_SUPERUSER_PASSWORD=admin -e DJANGO_SUPERUSER_EMAIL=admin@admin.se hompi
 
-### Adding dependencies
-If you add a new dependency, remember to run:
+### Database
+When running locally, an SQLite database will be used by default. By adding `-e DATABASE_URL=<postgres://user:password@host:port/something>` to the `docker run` command you can instead use an external database.
 
-    pip freeze > requirements.txt
+The production database is hosted as an add-on on Heroku. When running the production backend, Heroku has already populated the `DATABASE_URL` environment variable when first setting up the database.
+
+#### Browsing production database
+* Install Heroku CLI
+* Install PostgreSQL tools: https://devcenter.heroku.com/articles/heroku-postgresql#local-setup
+* Run `heroku pg:psql --app=hompi-backend`
+
+### Adding dependencies
+If you want to add a new dependency, the best way is to simply add it to the `requirements.txt` file.
 
 ### Django admin
 
