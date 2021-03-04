@@ -26,34 +26,43 @@ class _UsernameAndPasswordState extends State<UsernameAndPassword> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextField(
-          onChanged: (value) {
-            setState(() {
-              usernameInput = value;
-            });
-          },
-          controller: _usernameController,
-          decoration: InputDecoration(hintText: "Username"),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+          child: TextField(
+            onChanged: (value) {
+              setState(() {
+                usernameInput = value;
+              });
+            },
+            controller: _usernameController,
+            decoration: InputDecoration(hintText: "Username"),
+          ),
         ),
-        TextField(
-          onChanged: (value) {
-            setState(() {
-              passwordInput = value;
-            });
-          },
-          controller: _passwordController,
-          decoration: InputDecoration(hintText: "Password"),
-          obscureText: true,
-          enableSuggestions: false,
-          autocorrect: false,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+          child: TextField(
+            onChanged: (value) {
+              setState(() {
+                passwordInput = value;
+              });
+            },
+            controller: _passwordController,
+            decoration: InputDecoration(hintText: "Password"),
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
+          ),
         ),
-        FlatButton(
-          color: Colors.green,
-          textColor: Colors.white,
-          child: Text(buttonText),
-          onPressed: () {
-            buttonPressed(usernameInput, passwordInput);
-          },
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+          child: FlatButton(
+            color: Colors.green,
+            textColor: Colors.white,
+            child: Text(buttonText),
+            onPressed: () {
+              buttonPressed(usernameInput, passwordInput);
+            },
+          ),
         ),
       ],
     );
