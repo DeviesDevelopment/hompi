@@ -4,9 +4,9 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginPage extends StatefulWidget {
+class RegistrationPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegistrationPageState createState() => _RegistrationPageState();
 }
 
 getBaseUrl() {
@@ -20,7 +20,7 @@ getBaseUrl() {
   }*/
 }
 
-Future<void> login(String username, String password, BuildContext context) async {
+Future<void> createUser(String username, String password, BuildContext context) async {
   print("Logging in...");
   final response = await http.post(
     getBaseUrl() + 'rest-auth/login/',
@@ -45,7 +45,7 @@ Future<void> login(String username, String password, BuildContext context) async
   Navigator.pushReplacementNamed(context, '/tasks');
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegistrationPageState extends State<RegistrationPage> {
   TextEditingController _usernameController = TextEditingController();
   String usernameInput;
 
@@ -81,19 +81,9 @@ class _LoginPageState extends State<LoginPage> {
           FlatButton(
             color: Colors.green,
             textColor: Colors.white,
-            child: Text('Login'),
+            child: Text('Create User'),
             onPressed: () {
-              login(usernameInput, passwordInput, context);
-            },
-          ),
-          Divider(),
-          Text("Not registered yet?"),
-          FlatButton(
-            color: Colors.green,
-            textColor: Colors.white,
-            child: Text('Create New User'),
-            onPressed: () {
-              Navigator.pushNamed(context, '/registration');
+              createUser(usernameInput, passwordInput, context);
             },
           ),
         ],
