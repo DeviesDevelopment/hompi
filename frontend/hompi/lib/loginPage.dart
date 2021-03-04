@@ -34,7 +34,7 @@ Future<void> login(String username, String password, BuildContext context) async
     }),
   );
   if (response.statusCode != 200) {
-    throw Exception('Failed to login');
+    print('Failed to login: ' + response.statusCode.toString());
   }
 
   var body = jsonDecode(response.body);

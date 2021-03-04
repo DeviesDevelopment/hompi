@@ -54,15 +54,13 @@ Future<List<Task>> fetchTasks(BuildContext context) async {
     Iterable list = json.decode(response.body);
     return list.map((model) => Task.fromJson(model)).toList();
   } else {
-    print("Invalid token?");
-    await logout(context);
+    print('Failed to fetch tasks: ' + response.statusCode.toString());
   }
 }
 
 Future<void> addTask(Task task, BuildContext context) async {
   final prefs = await SharedPreferences.getInstance();
   final token = prefs.getString('token') ?? "";
-  print("Your token is $token");
   if (token == "") {
     Navigator.pushReplacementNamed(context, '/login');
   }
@@ -80,8 +78,7 @@ Future<void> addTask(Task task, BuildContext context) async {
     }),
   );
   if (response.statusCode != 201) {
-    print("Invalid token?");
-    await logout(context);
+    print('Failed to add task: ' + response.statusCode.toString());
   }
 }
 
@@ -101,7 +98,7 @@ Future<void> updateTask(Task task) async {
     }),
   );
   if (response.statusCode != 200) {
-    throw Exception('Failed to update task');
+    print('Failed to update task: ' + response.statusCode.toString());
   }
 }
 
@@ -194,7 +191,7 @@ class _TaskListState extends State<TaskList> {
       },
     );
   }
-  
+
   Widget _buildDueDate(DateTime dueDate) {
     return Text("Due on " + DateFormat('yyyy-MM-dd').format(dueDate));
   }
