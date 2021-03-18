@@ -110,7 +110,7 @@ class TaskList extends StatefulWidget {
 
 class _TaskListState extends State<TaskList> {
   Future<List<Task>> _tasks;
-  
+
   final _biggerFont = TextStyle(fontSize: 18.0);
 
   @override
@@ -168,6 +168,12 @@ class _TaskListState extends State<TaskList> {
       future: _tasks,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          if (snapshot.data.length == 0) {
+            return Center(
+              child: Text("Create your first task using the + button!"),
+            );
+          }
+
           return ListView.builder(
               padding: EdgeInsets.all(16.0),
               itemCount: snapshot.data.length * 2,
