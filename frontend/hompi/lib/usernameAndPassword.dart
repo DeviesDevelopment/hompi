@@ -43,8 +43,12 @@ class _UsernameAndPasswordState extends State<UsernameAndPassword> {
     var usernameError;
     var passwordError;
     if (widget.errors != null) {
-      usernameError = widget.errors['username'] != null ? widget.errors['username'].toString(): null;
-      passwordError = widget.errors['password1'].toString() != null ? widget.errors['password1'].toString() : null;
+      var errors = widget.errors;
+      if (errors['password1'] != null) {
+        errors['password'] = errors['password1'];
+      }
+      usernameError = errors['username'] != null ? errors['username'].toString(): null;
+      passwordError = errors['password'] != null ? errors['password'].toString() : null;
     }
 
     return Column(

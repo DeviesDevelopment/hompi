@@ -24,6 +24,7 @@ getBaseUrl() {
 
 class _LoginPageState extends State<LoginPage> {
   bool _loading = false;
+  dynamic errors;
 
   Future<void> login(String username, String password) async {
     setState(() {
@@ -46,7 +47,10 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     if (response.statusCode != 200) {
-      print('Failed to login: ' + response.statusCode.toString());
+      print('Failed to login: ' + response.statusCode.toString() + response.body);
+      setState(() {
+        errors = jsonDecode(response.body);
+      });
       return;
     }
 
@@ -74,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
               buttonPressed: (String username, String password) {
                 login(username, password);
               },
+              errors: errors,
             ),
             Divider(),
             Padding(
