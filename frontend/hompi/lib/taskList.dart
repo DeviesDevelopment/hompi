@@ -109,25 +109,21 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
-  final _tasks = <Task>[];
+  Future<List<Task>> _tasks;
+  
   final _biggerFont = TextStyle(fontSize: 18.0);
 
   @override
   initState() {
     super.initState();
-    fetchTasks(context).then((tasks) {
-      setState(() {
-        _tasks.addAll(tasks);
-      });
-    });
+    _tasks = fetchTasks(context);
   }
 
   _addTask(Task task, BuildContext context) async {
     await addTask(task, context);
     fetchTasks(context).then((tasks) {
       setState(() {
-        _tasks.clear();
-        _tasks.addAll(tasks);
+        _tasks = fetchTasks(context);
       });
     });
   }
@@ -137,8 +133,7 @@ class _TaskListState extends State<TaskList> {
     await updateTask(task);
     fetchTasks(context).then((tasks) {
       setState(() {
-        _tasks.clear();
-        _tasks.addAll(tasks);
+        _tasks = fetchTasks(context);
       });
     });
   }
@@ -168,16 +163,27 @@ class _TaskListState extends State<TaskList> {
         });
   }
 
-  Widget _buildSuggestions() {
-    return ListView.builder(
-        padding: EdgeInsets.all(16.0),
-        itemCount: _tasks.length * 2,
-        itemBuilder: (context, i) {
-          if (i.isOdd) return Divider();
+  Widget _buildTasks() {
+    return FutureBuilder<List<Task>>(
+      future: _tasks,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+              padding: EdgeInsets.all(16.0),
+              itemCount: snapshot.data.length * 2,
+              itemBuilder: (context, i) {
+                if (i.isOdd) return Divider();
 
-          final index = i ~/ 2;
-          return _buildRow(_tasks[index]);
-        });
+                final index = i ~/ 2;
+                return _buildRow(snapshot.data[index]);
+              });
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+
+        return Center(child: CircularProgressIndicator());
+      },
+    );
   }
 
   Widget _buildRow(Task task) {
@@ -212,7 +218,7 @@ class _TaskListState extends State<TaskList> {
             ),
           ]
         ),
-        body: _buildSuggestions(),
+        body: _buildTasks(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             _displayTextInputDialog(context);
