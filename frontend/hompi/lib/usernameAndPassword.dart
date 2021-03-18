@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class UsernameAndPassword extends StatefulWidget {
   final Function buttonPressed;
   final String buttonText;
+  final dynamic errors;
 
-  const UsernameAndPassword({this.buttonPressed, this.buttonText});
+  const UsernameAndPassword({this.buttonPressed, this.buttonText, this.errors});
 
   @override
   _UsernameAndPasswordState createState() => _UsernameAndPasswordState(buttonPressed, buttonText);
@@ -39,6 +40,13 @@ class _UsernameAndPasswordState extends State<UsernameAndPassword> {
 
   @override
   Widget build(BuildContext context) {
+    var usernameError;
+    var passwordError;
+    if (widget.errors != null) {
+      usernameError = widget.errors['username'] != null ? widget.errors['username'].toString(): null;
+      passwordError = widget.errors['password1'].toString() != null ? widget.errors['password1'].toString() : null;
+    }
+
     return Column(
       children: [
         Padding(
@@ -50,7 +58,10 @@ class _UsernameAndPasswordState extends State<UsernameAndPassword> {
               });
             },
             controller: _usernameController,
-            decoration: InputDecoration(hintText: "Username"),
+            decoration: InputDecoration(
+              hintText: "Username",
+              errorText: usernameError,
+            ),
           ),
         ),
         Padding(
@@ -62,7 +73,10 @@ class _UsernameAndPasswordState extends State<UsernameAndPassword> {
               });
             },
             controller: _passwordController,
-            decoration: InputDecoration(hintText: "Password"),
+            decoration: InputDecoration(
+              hintText: "Password",
+              errorText: passwordError,
+            ),
             obscureText: true,
             enableSuggestions: false,
             autocorrect: false,

@@ -23,6 +23,7 @@ getBaseUrl() {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   bool _loading = false;
+  dynamic errors;
 
   Future<void> createUser(String username, String password) async {
     setState(() {
@@ -46,6 +47,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
     if (response.statusCode != 201) {
       print('Failed to create user: ' + response.body);
+      setState(() {
+        errors = jsonDecode(response.body);
+      });
       return;
     }
 
@@ -73,6 +77,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               buttonPressed: (String username, String password) {
                 createUser(username, password);
               },
+              errors: errors,
             ),
           ],
         ),
