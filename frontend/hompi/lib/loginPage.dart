@@ -26,7 +26,6 @@ class _LoginPageState extends State<LoginPage> {
   bool _loading = false;
 
   Future<void> login(String username, String password) async {
-    print("Logging in...");
     setState(() {
       _loading = true;
     });
@@ -48,6 +47,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (response.statusCode != 200) {
       print('Failed to login: ' + response.statusCode.toString());
+      return;
     }
 
     var body = jsonDecode(response.body);
