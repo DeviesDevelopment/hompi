@@ -22,6 +22,21 @@ class _UsernameAndPasswordState extends State<UsernameAndPassword> {
 
   _UsernameAndPasswordState(this.buttonPressed, this.buttonText);
 
+  Widget _buildButton() {
+    return RaisedButton(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18.0),
+          side: BorderSide(color: Colors.green)),
+      onPressed: () {
+        buttonPressed(usernameInput, passwordInput);
+      },
+      color: Theme.of(context).accentColor,
+      textColor: Colors.white,
+      child: Text(buttonText.toUpperCase(),
+          style: TextStyle(fontSize: 15)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -58,21 +73,9 @@ class _UsernameAndPasswordState extends State<UsernameAndPassword> {
           child: ButtonTheme(
             minWidth: 200.0,
             height: 42.0,
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side: BorderSide(color: Colors.green)),
-              onPressed: () {
-                buttonPressed(usernameInput, passwordInput);
-              },
-              color: Theme.of(context).accentColor,
-              textColor: Colors.white,
-              child: Text(buttonText.toUpperCase(),
-                  style: TextStyle(fontSize: 15)),
-            ),
+            child: _buildButton(),
           ),
         ),
-
       ],
     );
   }
