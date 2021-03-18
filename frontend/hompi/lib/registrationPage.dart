@@ -45,7 +45,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     });
 
     if (response.statusCode != 201) {
-      print('Failed to create user');
+      print('Failed to create user: ' + response.body);
       return;
     }
 
